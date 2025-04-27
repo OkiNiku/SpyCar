@@ -160,7 +160,6 @@ MonoBehaviour:
   isFlying: 0
   isDriving: 0
   isBoating: 0
-  isIdle: 0
   OnStateChanged: {fileID: 11400000, guid: fb515c10c2db26a46b79e7128df28525, type: 2}
 --- !u!136 &116285596
 CapsuleCollider:
@@ -791,6 +790,7 @@ GameObject:
   - component: {fileID: 2141486054}
   - component: {fileID: 2141486053}
   - component: {fileID: 2141486057}
+  - component: {fileID: 2141486058}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -894,6 +894,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateText: {fileID: 1644555999}
+--- !u!114 &2141486058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141486052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3731a37b469ade4eb17753c38cacf78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: fb515c10c2db26a46b79e7128df28525, type: 2}
+  onEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2141486057}
+        m_TargetAssemblyTypeName: SpyCarUI, Assembly-CSharp
+        m_MethodName: UpdateToCurrentState
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
