@@ -25,8 +25,8 @@ public class FlyingState : IState
     public void Enter()
     {
         car.IsFlying = true;
-        targetAltitude = car.MaxFlyHeight;
-        car.LerpAltitude(targetAltitude, 2f);
+        targetAltitude = car.CaluculatedMaxFlyHeight;
+        car.LerpToAltitude(targetAltitude, 2f);
         SetRandomDestination();
     }
 

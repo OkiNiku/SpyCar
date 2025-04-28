@@ -7,9 +7,6 @@ public class SpyCar : MonoBehaviour
 {
     [SerializeField] private NavMeshAgent agent;
 
-    [Header("Movement Settings")]
-    [SerializeField] private float maxFlyHeight = 5f;
-
     [Header("State Flags")]
     [SerializeField] private bool isFlying;
     [SerializeField] private bool isDriving;
@@ -25,7 +22,7 @@ public class SpyCar : MonoBehaviour
 
     public NavMeshAgent Agent => agent;
     public SpyCarStateManager StateManager => stateManager;
-    public float MaxFlyHeight => calculatedMaxFlyHeight;
+    public float CaluculatedMaxFlyHeight => calculatedMaxFlyHeight;
 
     public Animator Animator { get; private set; }
 
@@ -60,7 +57,6 @@ public class SpyCar : MonoBehaviour
     {
         if (stateManager == null) return;
 
-        // Check input and transition states
         if (Input.GetKeyDown(KeyCode.F)) stateManager.TransitionTo(stateManager.flyingState);
         if (Input.GetKeyDown(KeyCode.D)) stateManager.TransitionTo(stateManager.drivingState);
         if (Input.GetKeyDown(KeyCode.B)) stateManager.TransitionTo(stateManager.boatState);
@@ -117,12 +113,12 @@ public class SpyCar : MonoBehaviour
         _environmentDepthManager.MaskMeshFilters.Add(effectMeshFilter);
     }*/
 
-    public void LerpAltitude(float targetOffset, float duration)
+    public void LerpToAltitude(float targetOffset, float duration)
     {
-        StartCoroutine(LerpAltitudeRoutine(targetOffset, duration));
+        StartCoroutine(LerpToAltitudeRoutine(targetOffset, duration));
     }
 
-    private IEnumerator LerpAltitudeRoutine(float targetOffset, float duration)
+    private IEnumerator LerpToAltitudeRoutine(float targetOffset, float duration)
     {
         float startOffset = agent.baseOffset;
         float elapsedTime = 0f;
@@ -155,58 +151,68 @@ public class SpyCar : MonoBehaviour
     }
 
 
+            - - HAD BEEN TESTED - -
 
     CAN ALSO DO THIS LIKE SO WITH COROUTINES:
 
-     Flying Class - car.StartLandingGround();
-                car.IsTakingOff = false;
-                car.StartCoroutine(LerpBaseOffset(car.Agent, 0f, 1.5f));
-                car.StartCoroutine(HandleLandingIdleEat());
+     Flying Class - car.StartToLand();
+                car.IsInTakingOffMode = false;
+                car.StartCoroutine(LerpToBaseOffset(car.Agent, 0f, 1.5f));
+                car.StartCoroutine(HandleLandingToTopDown());
 
-    public void StartLandingGround()
+    public void StartToLand()
     {
-        Debug.Log("StartLanding called");
         // Stop the coroutine when you want to stop the animation
-        isLanding = true;
-        isTakingOff = false;
-        animator.SetBool("IsLandingGround", true);
-        animator.SetBool("IsTakingOff", false);
+        isInLanding = true;
+        IsInTakingOffMode = false;
+        animator.SetBool("isInLanding", true);
+        animator.SetBool("IsInTakingOffMode", false);
     }
 
     private IEnumerator LerpBaseOffset(NavMeshAgent agent, float targetOffset, float duration)
     {
-        float startOffset = agent.baseOffset;  // Current baseOffset
+        float startOffset = agent.baseOffset;
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
         {
-            // Lerp baseOffset smoothly from start to target
             agent.baseOffset = Mathf.Lerp(startOffset, targetOffset, elapsedTime / duration);
 
-            elapsedTime += Time.deltaTime;  // Increment elapsed time
-            yield return null;  // Wait until the next frame
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
 
-        // Ensure the final baseOffset is exactly the target offset
         agent.baseOffset = targetOffset;
     }
 
-     private IEnumerator HandleLandingIdleEat()
+     private IEnumerator HandleLandingToTopDown()
     {
-        // Wait for the takeoff animation to finish
+        // Wait for the IsInTakingOffMode animation to finish
         yield return car.StartCoroutine(car.Land());
         yield return new WaitForSeconds(1);
-        animator.Play("Bird-Foraging2");
-        Debug.Log("Bird-Foraging2");
 
+        animator.Play("TopGoingDown");
         yield return new WaitForSeconds(2);
-        car.seedsToEat.SetActive(false);
-        car.IsTakingOff = false;
-        car.IsLanding = false;
-        car.IsEating = false;
-        car.BirdStateManager.TransitionTo(car.BirdStateManager.idleState);
+
+        car.IsInTakingOffMode = false;
+        car.isInLanding = false;
+        car.TopDown = True;
+        stateManager.TransitionTo(stateManager.drivingState);
 
     }
+
+    SpyCar class - public IEnumerator Land()
+    {
+        // Wait until the animation is done or the bool is false
+        while (isInLanding)
+        {
+
+
+            yield return null; // Wait until the next frame
+        }
+        isInLanding = false;
+    }
+
 
     */
 
