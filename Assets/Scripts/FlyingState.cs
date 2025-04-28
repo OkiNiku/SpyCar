@@ -15,6 +15,7 @@ public class FlyingState : IState
     private float turnThreshold = 0.1f;
     private float previousRotationY;
     private float angularVelocityY;
+    
     public FlyingState(SpyCar car)
     {
         this.car = car;
