@@ -169,7 +169,7 @@ public class SpyCar : MonoBehaviour
         animator.SetBool("IsInTakingOffMode", false);
     }
 
-    private IEnumerator LerpBaseOffset(NavMeshAgent agent, float targetOffset, float duration)
+    private IEnumerator LerpToBaseOffset(NavMeshAgent agent, float targetOffset, float duration)
     {
         float startOffset = agent.baseOffset;
         float elapsedTime = 0f;
