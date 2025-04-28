@@ -151,7 +151,7 @@ public class SpyCar : MonoBehaviour
     }
 
 
-            - - HAD BEEN TESTED - -
+            - - HAS BEEN TESTED - -
 
     CAN ALSO DO THIS LIKE SO WITH COROUTINES:
 
